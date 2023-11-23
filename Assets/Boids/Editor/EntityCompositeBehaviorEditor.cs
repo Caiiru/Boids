@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(CompositeBehavior))]
-public class CompositeBehaviorEditor : Editor
+[CustomEditor(typeof(EntityCompositeBehavior))]
+public class EntityCompositeBehaviorEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         //setup
-        CompositeBehavior cb = (CompositeBehavior)target;
+        EntityCompositeBehavior cb = (EntityCompositeBehavior)target;
 
         //check for behaviors
         if (cb.behaviors == null || cb.behaviors.Length == 0)
@@ -30,7 +30,7 @@ public class CompositeBehaviorEditor : Editor
             {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(i.ToString(), GUILayout.MinWidth(60f), GUILayout.MaxWidth(60f));
-                cb.behaviors[i] = (MovementBoidBehavior)EditorGUILayout.ObjectField(cb.behaviors[i], typeof(MovementBoidBehavior), false, GUILayout.MinWidth(60f));
+                cb.behaviors[i] = (EntityBehavior)EditorGUILayout.ObjectField(cb.behaviors[i], typeof(EntityBehavior), false, GUILayout.MinWidth(60f));
                 cb.weights[i] = EditorGUILayout.FloatField(cb.weights[i], GUILayout.MinWidth(60f), GUILayout.MaxWidth(60f));
                 EditorGUILayout.EndHorizontal();
             }
@@ -53,10 +53,10 @@ public class CompositeBehaviorEditor : Editor
 
     }
 
-    void AddBehavior(CompositeBehavior cb)
+    void AddBehavior(EntityCompositeBehavior cb)
     {
         int oldCount = (cb.behaviors != null) ? cb.behaviors.Length : 0;
-        MovementBoidBehavior[] newBehaviors = new MovementBoidBehavior[oldCount + 1];
+        EntityBehavior[] newBehaviors = new EntityBehavior[oldCount + 1];
         float[] newWeights = new float[oldCount + 1];
         for (int i = 0; i < oldCount; i++)
         {
@@ -68,7 +68,7 @@ public class CompositeBehaviorEditor : Editor
         cb.weights = newWeights;
     }
 
-    void RemoveBehavior(CompositeBehavior cb)
+    void RemoveBehavior(EntityCompositeBehavior cb)
     {
         int oldCount = cb.behaviors.Length;
         if (oldCount == 1)
@@ -77,7 +77,7 @@ public class CompositeBehaviorEditor : Editor
             cb.weights = null;
             return;
         }
-        MovementBoidBehavior[] newBehaviors = new MovementBoidBehavior[oldCount - 1];
+        EntityBehavior[] newBehaviors = new EntityBehavior[oldCount - 1];
         float[] newWeights = new float[oldCount - 1];
         for (int i = 0; i < oldCount - 1; i++)
         {

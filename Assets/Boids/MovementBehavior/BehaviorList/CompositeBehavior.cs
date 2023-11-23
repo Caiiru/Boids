@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName ="Boid/Behavior/Composite")]
+[CreateAssetMenu(menuName ="Boid/MovementBehavior/Composite")]
 public class CompositeBehavior : FilterBoidBehavior
 {
-    public BoidBehavior[] behaviors;
+    public MovementBoidBehavior[] behaviors;
     public float[] weights;
     public override Vector2 CalculateMove(BoidAgent agent, List<Transform> context, Boid boid)
     {   

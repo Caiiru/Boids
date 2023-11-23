@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: StayInRadiusR15
   m_EditorClassIdentifier: 
   filter: {fileID: 0}
-  center: {x: 0, y: 0}
-  radius: 23.6
+  center: {x: -18.79021, y: 259.97507}
+  radius: 300

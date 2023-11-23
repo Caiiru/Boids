@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[CreateAssetMenu(menuName = "Boid/Behavior/Avoidance")]
+[CreateAssetMenu(menuName ="Boid/MovementBehavior/Avoidance")]
 public class AvoidanceBehavior : FilterBoidBehavior
 {
     public override Vector2 CalculateMove(BoidAgent agent, List<Transform> context, Boid boid)
@@ -21,6 +21,7 @@ public class AvoidanceBehavior : FilterBoidBehavior
             {
                 if(Vector2.SqrMagnitude(item.position-agent.transform.position) < boid.SquareAvoidanceRadius)
                 {
+                    
                     avoidanceMove += (Vector2)(agent.transform.position - item.position);
                     nAvoid++;
                 } 
@@ -31,4 +32,6 @@ public class AvoidanceBehavior : FilterBoidBehavior
             return avoidanceMove;
         }
     }
+ 
 }
+

@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[CreateAssetMenu(menuName ="Boid/Behavior/Alignment")]
+[CreateAssetMenu(menuName ="Boid/MovementBehavior/Alignment")]
 public class AlignmentBehavior : FilterBoidBehavior
 {  
     public override Vector2 CalculateMove(BoidAgent agent, List<Transform> context, Boid boid)
     {
-        //if no neighbors, maintain current alignment
+        //Alinha os boids no mesmo sentido
+
+        //Se não houver vizinhos perto, segue reto
         if(context.Count ==0){
             return agent.transform.up;
         }
