@@ -11,6 +11,8 @@ public class FoodSpawner : MonoBehaviour
     [Range(1, 30)]
     public float spawnTime = 10;
 
+    public int multiplier = 1;
+
     private float timeToSpawn = 0f;
 
     [Range(10, 500)]
@@ -36,7 +38,9 @@ public class FoodSpawner : MonoBehaviour
     void Update()
     {
         if (timeToSpawn > spawnTime)
-            SpawnFood();
+            for(int i = 0; i<multiplier;i++){
+                SpawnFood();
+            }
         else
             timeToSpawn += 1 * Time.deltaTime;
 

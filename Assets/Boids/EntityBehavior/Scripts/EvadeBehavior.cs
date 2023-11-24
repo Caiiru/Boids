@@ -10,27 +10,32 @@ public class EvadeBehavior : EntityBehavior
     public override CreatureAction ChooseAction(BoidAgent agent, List<Transform> context, Boid boid, CreatureCategory category)
     {
         var currentHealth = agent.currentHealth;
-        foreach (var obj in context)
+        if (agent.GetComponent<Entity>().creatureCategory == CreatureCategory.Passive)
         {
-            if (obj.GetComponent<Entity>().creatureCategory == CreatureCategory.Agressive)
+            foreach (var obj in context)
             {
-                if (obj.transform.GetComponent<BoidAgent>().target != null)
+                if (obj.GetComponent<Entity>().creatureCategory == CreatureCategory.Agressive)
                 {
-                    urgencyValue = Vector3.Distance(obj.transform.position, agent.transform.position * agent.evadeRadius) *10;
-                    Debug.Log(agent.transform.name + " urgency value to Evade: " + urgencyValue);
-                    return CreatureAction.Evading;
+                    if (obj.transform.GetComponent<BoidAgent>().target != null)
+                    {
+                        urgencyValue = Vector3.Distance(obj.transform.position, agent.transform.position * agent.evadeRadius) * 10;
+                        //Debug.Log(agent.transform.name + " urgency value to Evade: " + urgencyValue);
+                        return CreatureAction.Evading;
 
+                    }
+                    else
+                    {
+                        urgencyValue = 0;
+                    }
+                    return CreatureAction.Exploring;
                 }
-                else
-                {
-                    urgencyValue = 0;
-                }
-                return CreatureAction.Exploring;
             }
+
         }
         return CreatureAction.Exploring;
-
     }
 
-
 }
+
+
+

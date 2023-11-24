@@ -18,11 +18,10 @@ public abstract class Entity : MonoBehaviour
     //Battle Settings
     public float damage;
     public float attackRange = 1f;
-    private float attackFrequency;
-    private float timeSinceLastAttack = 0f;
+    public float attackFrequency;
+    public float timeSinceLastAttack = 0f;
     public float totalAmountToCure = 0; //valor total para curar 
     private float tickHealTimer = 0; //Tempo atual para curar
-    [HideInInspector]
     public float tickDamageTimer = 0;
     public bool isDead;
     public bool wasEaten;
@@ -35,7 +34,7 @@ public abstract class Entity : MonoBehaviour
     {
         isDead = false;
         wasEaten = false;
-        attackFrequency = Random.Range(0.5f, 2f) / 1;
+        attackFrequency = 1f;
         maxHealth = Random.Range(1, 10);
         maxSpeed = 2f;
         damage = Random.Range(1, 4);
@@ -62,17 +61,7 @@ public abstract class Entity : MonoBehaviour
     }
     public virtual void Die(DeathType deathType)
     {
-        // if (deathType == DeathType.Hungry)
-        // {
-        //     Debug.Log(this.name + " died by hunger");
-        // }
-        // else if(deathType == DeathType.Fighting)
-        // {
-        //     Debug.Log(this.name + " died fighting (or running)");
-        // }
-        // else{
-        //     Debug.Log("Plant was eaten");
-        // }
+         
         isDead = true;
 
     }
@@ -82,7 +71,7 @@ public abstract class Entity : MonoBehaviour
         if (timeSinceLastAttack >= attackFrequency)
         {
             timeSinceLastAttack = 0;
-            if (target.TakeDamage(damage))
+            if (target.TakeDamage(damage) || target.isDead)
             {
                 Eat(target);
             }
@@ -126,6 +115,7 @@ public abstract class Entity : MonoBehaviour
         totalAmountToCure = deadTarget.weight;
         hunger -= deadTarget.weight / 10;
         currentHealth = Mathf.Min(currentHealth += deadTarget.weight / 2, currentHealth, maxHealth);
+        Debug.Log("EATED");
         deadTarget.wasEaten = true;
     }
     public virtual void Cure()

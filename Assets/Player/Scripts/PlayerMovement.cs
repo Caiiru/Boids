@@ -16,6 +16,9 @@ public class player : MonoBehaviour
     public float baseSpeed = 5f;
     private float timeInMotion = 0f;
 
+    [Header("Visual")]
+    public ParticleSystem trail;
+
     void Start()
     {
         rb2D = GetComponent<Rigidbody2D>();
@@ -41,12 +44,15 @@ public class player : MonoBehaviour
 
         if (movement != Vector3.zero)
         {
+            if(trail.isPlaying==false)
+                trail.Play();
             timeInMotion += Time.deltaTime;
             float angle = Mathf.Atan2(movement.y, movement.x) * Mathf.Rad2Deg - 90f;
             transform.GetChild(0).transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
         else
         {
+            trail.Stop();
             timeInMotion = 0;
         }
 

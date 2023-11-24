@@ -11,7 +11,13 @@ public class PursuitBehavior : EntityBehavior
         var currentHunger = agent.hunger * 100;
 
         
-        urgencyValue =(1/(currentHealth/2)) * (currentHunger*2);
+        if(currentHunger > 70){
+            urgencyValue = float.MaxValue;
+
+        }
+        else{
+            urgencyValue = float.MinValue;
+        }
         return CreatureAction.Pursuiting;
     }
 

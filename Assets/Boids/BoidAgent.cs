@@ -107,7 +107,7 @@ public class BoidAgent : Entity
 
                 Vector2 targetDirection = -(c.transform.position - transform.position).normalized;
                 transform.up = targetDirection;
-                transform.position += (Vector3)targetDirection *currentSpeed * Time.fixedDeltaTime;
+                transform.position += (Vector3)targetDirection * currentSpeed * Time.fixedDeltaTime;
                 //Debug.DrawLine(agent.transform.position,c.transform.position, Color.blue, 0.5f, false);
             }
         }
@@ -134,7 +134,7 @@ public class BoidAgent : Entity
             }
             else
             {
-                Attack(target.GetComponent<Entity>()); 
+                Attack(target.GetComponent<Entity>());
             }
 
             // distanceShow = Vector3.Distance(transform.position, target.position);
@@ -196,7 +196,6 @@ public class BoidAgent : Entity
         }
         return null;
     }
-    public float distanceShow = 0;
     public void Move(Vector2 velocity)
     {
 
@@ -209,13 +208,13 @@ public class BoidAgent : Entity
             }
 
             Vector2 targetDirection = (target.position - transform.position).normalized;
-            transform.up = targetDirection;
+            transform.GetChild(0).transform.up = targetDirection;
             transform.position += (Vector3)targetDirection * Time.fixedDeltaTime;
             Debug.DrawRay(transform.position, targetDirection * 1f, Color.magenta);
         }
         else
         {
-            transform.up = velocity;
+            transform.GetChild(0).transform.up = velocity;
             transform.position += (Vector3)velocity * Time.fixedDeltaTime;
             // transform.up = velocity;
             // transform.position += (Vector3)velocity * Time.fixedDeltaTime;
@@ -228,7 +227,7 @@ public class BoidAgent : Entity
         base.changeWeigth(valor);
         transform.localScale = new Vector3(weight * 0.7f / 1.2f, weight * 0.7f);
         attackRange = transform.localScale.y + 1;
-        currentSpeed = maxSpeed  / weight;
+        currentSpeed = maxSpeed / weight;
     }
     public void spendEnergy()
     {
@@ -269,7 +268,8 @@ public class BoidAgent : Entity
 
     }
 
-    public Transform GetTarget(){
+    public Transform GetTarget()
+    {
         return target;
     }
 }

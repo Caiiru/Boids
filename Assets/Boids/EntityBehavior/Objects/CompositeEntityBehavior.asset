@@ -15,5 +15,9 @@ MonoBehaviour:
   urgencyValue: 0
   behaviors:
   - {fileID: 11400000, guid: 6eefe29d75c78264c95b0bb59ab4d9e1, type: 2}
+  - {fileID: 11400000, guid: ce65aead21f6f7546b19a6f6e1d0b726, type: 2}
+  - {fileID: 11400000, guid: 2c346051c1c489a4794246cd4da36555, type: 2}
   weights:
-  - 1
+  - 0.1
+  - 0.5
+  - 0.5
