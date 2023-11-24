@@ -52,7 +52,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -130,6 +130,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 394861e004f9a844a9bce6bbae9d4a44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  creatureCategory: 0
+  currentAction: 0
+  maxHealth: 0
+  currentHealth: 0
+  weight: 0
+  hunger: 0
+  damage: 0
+  attackRange: 1
+  attackFrequency: 0
+  timeSinceLastAttack: 0
+  totalAmountToCure: 0
+  tickDamageTimer: 0
+  isDead: 0
+  wasEaten: 0
+  currentSpeed: 0
+  maxSpeed: 0
+  target: {fileID: 0}
+  evadeRadius: 0
+  lookForFoodRadius: 20
 --- !u!58 &2659883553222057263
 CircleCollider2D:
   m_ObjectHideFlags: 0
