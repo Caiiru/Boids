@@ -10,6 +10,7 @@ public class StayInRadiusBehavior : FilterBoidBehavior
     public override Vector2 CalculateMove(BoidAgent agent, List<Transform> context, Boid boid)
     {
         center = GameObject.FindWithTag("Player").transform.position;
+        radius = boid.startingCount * 3;
         Vector2 centerOffset = center - (Vector2)agent.transform.position;
         float t = centerOffset.magnitude  / radius ;
         if(t < 0.9f){

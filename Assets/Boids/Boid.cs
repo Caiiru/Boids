@@ -53,22 +53,23 @@ public class Boid : MonoBehaviour
     {
         foreach (BoidAgent agent in agents)
         {
-            agent.transform.position = returnBoids(agent.transform.position);
-            List<Transform> context = GetNearbyObjects(agent);
-
-            //ONLY EDITOR
-            //agent.GetComponentInChildren<SpriteRenderer>().color = Color.Lerp(Color.white,Color.red, context.Count/6f);
-
-            Vector2 move = movementBehavior.CalculateMove(agent, context, this);
-            move *= driveFactor;
-            if (move.sqrMagnitude > squareMaxSpeed)
+            if (!agent.isDead && agent.gameObject.active == true)
             {
-                move = (move.normalized * agent.currentSpeed) * maxSpeed;
-            }
-            agent.setAction(entityBehavior.ChooseAction(agent,context,this,agent.creatureCategory));
+                agent.transform.position = returnBoids(agent.transform.position);
+                List<Transform> context = GetNearbyObjects(agent);
 
-            agent.checkAction(move);
-            agent.checkStatus();
+                //ONLY EDITOR
+                //agent.GetComponentInChildren<SpriteRenderer>().color = Color.Lerp(Color.white,Color.red, context.Count/6f);
+
+                Vector2 move = movementBehavior.CalculateMove(agent, context, this);
+                move *= driveFactor;
+                if (move.sqrMagnitude > squareMaxSpeed)
+                {
+                    move = (move.normalized * agent.currentSpeed) * maxSpeed;
+                }
+                agent.setAction(entityBehavior.ChooseAction(agent, context, this, agent.creatureCategory));
+                agent.checkAction(move); 
+            }
 
         }
     }
@@ -110,7 +111,7 @@ public class Boid : MonoBehaviour
         if (Application.isPlaying)
         {
             Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(player.position , 300);
+            Gizmos.DrawWireSphere(player.position, 300);
 
         }
     }

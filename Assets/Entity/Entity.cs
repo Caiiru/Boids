@@ -13,16 +13,19 @@ public abstract class Entity : MonoBehaviour
     public float maxHealth;
     public float currentHealth;
     public float weight;
+    public float hunger;
 
     //Battle Settings
-    public bool isDead;
-    public bool wasEaten;
     public float damage;
+    public float attackRange = 1f;
     private float attackFrequency;
     private float timeSinceLastAttack = 0f;
     public float totalAmountToCure = 0; //valor total para curar 
-    private float tickTimer = 0; //Tempo atual para curar
-    private bool isHealing = false;
+    private float tickHealTimer = 0; //Tempo atual para curar
+    [HideInInspector]
+    public float tickDamageTimer = 0;
+    public bool isDead;
+    public bool wasEaten;
 
     //Movement Settings
     public float currentSpeed;
@@ -30,27 +33,46 @@ public abstract class Entity : MonoBehaviour
 
     public virtual void Start()
     {
-        isDead=false;
-        wasEaten=false;
+        isDead = false;
+        wasEaten = false;
         attackFrequency = Random.Range(0.5f, 2f) / 1;
+        maxHealth = Random.Range(1, 10);
         maxSpeed = 2f;
-        changeWeigth(Random.Range(0,10));
-        
+        damage = Random.Range(1, 4);
+        changeWeigth(Random.Range(0, 10));
     }
 
 
     public virtual bool TakeDamage(float damageValue)
     {
-        currentHealth -= maxHealth <= 0 ? 0 : currentHealth;
-        if (currentHealth <= 0)
+
+        if (tickDamageTimer > 0.8f)
         {
-            Die();
-            return true;
+            currentHealth -= damageValue;
+            tickDamageTimer = 0;
+            if (currentHealth <= 0)
+            {
+                Die(DeathType.Fighting);
+                return true;
+            }
+
         }
         return false;
+
     }
-    public virtual void Die()
+    public virtual void Die(DeathType deathType)
     {
+        // if (deathType == DeathType.Hungry)
+        // {
+        //     Debug.Log(this.name + " died by hunger");
+        // }
+        // else if(deathType == DeathType.Fighting)
+        // {
+        //     Debug.Log(this.name + " died fighting (or running)");
+        // }
+        // else{
+        //     Debug.Log("Plant was eaten");
+        // }
         isDead = true;
 
     }
@@ -60,7 +82,8 @@ public abstract class Entity : MonoBehaviour
         if (timeSinceLastAttack >= attackFrequency)
         {
             timeSinceLastAttack = 0;
-            if(target.TakeDamage(damage)){
+            if (target.TakeDamage(damage))
+            {
                 Eat(target);
             }
 
@@ -68,36 +91,63 @@ public abstract class Entity : MonoBehaviour
     }
     public virtual void Update()
     {
-        if (currentAction == CreatureAction.Attacking)
+        tickDamageTimer += Time.deltaTime;
+        if (creatureCategory != CreatureCategory.Food)
         {
-            timeSinceLastAttack += Time.deltaTime;
 
-        }
-        if(isDead && wasEaten)
-            Destroy(gameObject);
-
-        if(isHealing){
-            tickTimer+=Time.deltaTime;
-            if(tickTimer >= 0.5f){
+            if (hunger > 1)
+            {
+                if (TakeDamage(1)) Die(DeathType.Hungry);
+            }
+            if (totalAmountToCure > 0)
+            {
+                tickHealTimer += Time.deltaTime;
+                if (tickHealTimer > 0.5f)
+                {
+                    Cure();
+                }
+            }
+            if (currentAction == CreatureAction.Pursuiting)
+            {
+                timeSinceLastAttack += Time.deltaTime;
 
             }
+            if (isDead && wasEaten && creatureCategory != CreatureCategory.Food)
+                gameObject.SetActive(false);
+            else if (isDead && wasEaten && creatureCategory == CreatureCategory.Food)
+                Destroy(gameObject);
+
         }
     }
 
-    public virtual void Eat(Entity target){
-        changeWeigth(target.weight);
-        target.wasEaten = true;
-        totalAmountToCure=target.weight;
+    public virtual void Eat(Entity deadTarget)
+    {
+        changeWeigth(deadTarget.weight); 
+        totalAmountToCure = deadTarget.weight;
+        hunger -= deadTarget.weight / 10;
+        currentHealth = Mathf.Min(currentHealth += deadTarget.weight / 2, currentHealth, maxHealth);
+        deadTarget.wasEaten = true;
     }
-    public virtual void Cure(){
-        var valToCure = totalAmountToCure - (maxHealth/10) > 0 ? maxHealth/10: totalAmountToCure;
-        currentHealth += valToCure;
+    public virtual void Cure()
+    {
+        tickHealTimer = 0;
+        var valToCure = totalAmountToCure - (maxHealth / 10) > 0 ? maxHealth / 10 : totalAmountToCure;
+        currentHealth += totalAmountToCure / 10;
+
+        var cureValor = maxHealth / 10;
+        totalAmountToCure = totalAmountToCure - cureValor > 0 ? totalAmountToCure - cureValor : 0;
+
+        currentHealth = currentHealth + valToCure > maxHealth ? maxHealth : currentHealth + valToCure;
     }
 
     public virtual void changeWeigth(float valor)
     {
         weight += valor;
         currentSpeed = maxSpeed / weight;
-        maxHealth+=valor;
+        maxHealth += valor;
+        damage += Random.Range(0.2f, 2) * weight;
     }
+
+
+
 }

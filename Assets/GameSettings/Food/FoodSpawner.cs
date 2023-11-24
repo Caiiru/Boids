@@ -57,6 +57,7 @@ public class FoodSpawner : MonoBehaviour
         var spawnedFood = Instantiate(foodPrefab, spawnPos, Quaternion.identity);
         spawnedFood.transform.SetParent(this.transform);
         spawnedFood.name = "food"+foodList.Count;
+        spawnedFood.tag = "Food";
         foodList.Add(spawnedFood);
         // Debug.Log("Food created in " + spawnPos);
     }
@@ -80,11 +81,17 @@ public class FoodSpawner : MonoBehaviour
     void checkUncessaryFoods()
     {
         foreach (var food in foodList)
-        {
+        { 
+            if(food.GetComponent<Entity>().wasEaten){
+                foodList.Remove(food);
+                Destroy(food);
+                return;
+            }   
             float distanceToPlayer = Vector3.Distance(player.transform.position,food.transform.position);
             if(distanceToPlayer > spawnRadius){
                 food.transform.position = changeFoodPosition();
             }
+           
         }
     }
 

@@ -16,10 +16,7 @@ public class PlayerEntity : Entity
         base.Update();
     }
 
-    public override void Die()
-    {
-        base.Die();
-    }
+    
     public override bool TakeDamage(float damageValue)
     {
         return base.TakeDamage(damageValue);
